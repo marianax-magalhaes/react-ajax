@@ -1,19 +1,21 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
-import MeuComponente from './components/MeuComponent'
+import Usuarios from './components/Usuarios'
+
 
 function App() {
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        
-        <MeuComponente titulo="Ola mundo"/>
-
-      </header>
+      <main>
+        <Usuarios />
+      </main>
     </div>
   );
+
 }
 
 export default App;
+
+ 
