@@ -1,44 +1,37 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import './AddUsuario.css'
 
-const INITIAL_STATE = {
-    usuario: { nome: '', sobrenome: '', email: '' }
-  }
-
 function AddUsuario(props) {
 
-    this.state = INITIAL_STATE
+    const [nome, setNome] = useState('')
+    const [sobrenome, setSobrenome] = useState('')
+    const [email, setEmail] = useState('')
 
-    this.onChangeHandler = this.onChangeHandler.bind(this)
-    this.onSubmitHandler = this.onSubmitHandler.bind(this)
+    const onSubmitHandler = event => {
+        event.preventDefault()
 
+        const usuario = {
+            nome: nome,
+            sobrenome: sobrenome,
+            email: email
+        }
 
-  const onChangeHandler = (event) => {
-    const { name, value } = event.target
-
-    this.setState({ usuario: { ...this.state.usuario, [name]: value } })
-  }
-
- 
-
-  const onSubmitHandler = (event) => {
-    event.preventDefault()
-
-    const usuario = this.state.usuario
-
-    fetch('https://reqres.in/api/users', {
-        method: 'POST', 
-        headers: {'Content-type': 'application/json'},
-        body:JSON.stringify(usuario)})
-    .then(resposta => resposta.json())
-    .then(dados=>{
+        fetch('https://reqres.in/api/users', {
+            method: 'POST', 
+            headers: {'Content-type': 'application/json'},
+            body:JSON.stringify(usuario)
+        })
+        .then(resposta => resposta.json())
+        .then(dados=>{
         // console.log(dados)
-        this.setState(INITIAL_STATE)
-        this.props.addUsuario(dados)
+            setNome('')
+            setSobrenome('')
+            setEmail('')
+
+            props.addUsuario(dados)
     })
   }
-
 
     return (
 
@@ -55,8 +48,8 @@ function AddUsuario(props) {
               <input
                 type="text"
                 name="nome"
-                value={this.state.usuario.nome}
-                onChange={this.onChangeHandler}
+                value={nome}
+                onChange={event=> setNome.target.value}
                 required>
               </input>
             </div>
@@ -66,8 +59,8 @@ function AddUsuario(props) {
               <input
                 type="text"
                 name="sobrenome"
-                value={this.state.usuario.sobrenome}
-                onChange={this.onChangeHandler}
+                value={sobrenome}
+                onChange={event=>setSobrenome(event.target.value)}
                 required>
               </input>
             </div>
@@ -81,8 +74,8 @@ function AddUsuario(props) {
               <input
                 type="email"
                 name="email"
-                value={this.state.usuario.email}
-                onChange={this.onChangeHandler}
+                value={email}
+                onChange={event=>setEmail(event.target.value)}
                 required>
               </input>
             </div>
