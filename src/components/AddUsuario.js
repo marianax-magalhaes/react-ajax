@@ -2,14 +2,16 @@ import React, { Component } from 'react'
 
 import './AddUsuario.css'
 
+const INITIAL_STATE = {
+    usuario: { nome: '', sobrenome: '', email: '' }
+  }
+
 class AddUsuario extends Component {
 
   constructor(props) {
     super(props)
 
-    this.state = {
-      usuario: { nome: '', sobrenome: '', email: '' }
-    }
+    this.state = INITIAL_STATE
 
     this.onChangeHandler = this.onChangeHandler.bind(this)
 
@@ -30,15 +32,20 @@ class AddUsuario extends Component {
 
     event.preventDefault()
 
-    const id = Math.floor(Math.random() * 1000)
-    const usuario = { ...this.state.usuario, id }
+    const usuario = this.state.usuario
 
-    this.setState({ usuario: { nome: '', sobrenome: '', email: '' } })
-
-    this.props.addUsuario(usuario)
+    fetch('https://reqres.in/api/users', {
+        method: 'POST', 
+        headers: {'Content-type': 'application/json'},
+        body:JSON.stringify(usuario)})
+    .then(resposta => resposta.json())
+    .then(dados=>{
+        // console.log(dados)
+        this.setState(INITIAL_STATE)
+        this.props.addUsuario(dados)
+    })
 
   }
-
 
   render() {
 

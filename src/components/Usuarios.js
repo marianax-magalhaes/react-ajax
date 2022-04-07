@@ -19,11 +19,8 @@ class Usuarios extends Component {
 
  
   addUsuario(usuario) {
-
     const usuarios = [...this.state.usuarios, usuario]
-
     this.setState({ usuarios: usuarios })
-
   }
 
   removerUsuario(usuario) {
