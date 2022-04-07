@@ -11,11 +11,7 @@ function AddUsuario(props) {
     const onSubmitHandler = event => {
         event.preventDefault()
 
-        const usuario = {
-            nome: nome,
-            sobrenome: sobrenome,
-            email: email
-        }
+        const usuario = {nome, sobrenome, email}
 
         fetch('https://reqres.in/api/users', {
             method: 'POST', 
