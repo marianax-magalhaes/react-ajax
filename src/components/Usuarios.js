@@ -10,10 +10,7 @@ class Usuarios extends Component {
     super(props)
 
     this.state = {
-      usuarios: [
-        { id: 1, nome: 'João', sobrenome: 'Silva', email: 'joao@mail.com' },
-        { id: 2, nome: 'Maria', sobrenome: 'Santos', email: 'maria@mail.com' }
-      ]
+      usuarios: []
     }
 
     this.addUsuario = this.addUsuario.bind(this)
@@ -38,6 +35,28 @@ class Usuarios extends Component {
       this.setState({ usuarios: usuarios })
     }
 
+  }
+
+//   melhor lugar p executar requisicao http
+  componentDidMount() {
+      fetch('https://reqres.in/api/users')
+      .then(resposta =>resposta.json())
+      .then(dados => {
+        //   console.log(dados.data)
+
+          const usuarios = dados.data.map(usuario=>({
+                id: usuario.id,
+                nome: usuario.first_name,
+                sobrenome: usuario.last_name,
+                email: usuario.email
+              
+          }))
+
+        //   console.log(usuarios)
+        // this.setState({usuarios: usuarios})
+        // como tem o mesmo nome, podemos simplificar para:
+        this.setState({usuarios})
+      })
   }
 
   render() {
