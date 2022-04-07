@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import './AddUsuario.css'
 
@@ -6,21 +6,15 @@ const INITIAL_STATE = {
     usuario: { nome: '', sobrenome: '', email: '' }
   }
 
-class AddUsuario extends Component {
-
-  constructor(props) {
-    super(props)
+function AddUsuario(props) {
 
     this.state = INITIAL_STATE
 
     this.onChangeHandler = this.onChangeHandler.bind(this)
-
     this.onSubmitHandler = this.onSubmitHandler.bind(this)
 
-  }
 
-
-  onChangeHandler(event) {
+  const onChangeHandler = (event) => {
     const { name, value } = event.target
 
     this.setState({ usuario: { ...this.state.usuario, [name]: value } })
@@ -28,8 +22,7 @@ class AddUsuario extends Component {
 
  
 
-  onSubmitHandler(event) {
-
+  const onSubmitHandler = (event) => {
     event.preventDefault()
 
     const usuario = this.state.usuario
@@ -44,10 +37,8 @@ class AddUsuario extends Component {
         this.setState(INITIAL_STATE)
         this.props.addUsuario(dados)
     })
-
   }
 
-  render() {
 
     return (
 
@@ -105,7 +96,7 @@ class AddUsuario extends Component {
       </div>
 
     )
-  }
 }
+
 
 export default AddUsuario
