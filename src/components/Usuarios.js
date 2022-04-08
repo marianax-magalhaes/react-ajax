@@ -1,55 +1,17 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import AddUsuario from './AddUsuario'
 import Usuario from './Usuario'
 
 
-class Usuarios extends Component {
+function Usuarios(){
 
-  constructor(props) {
-    super(props)
+    const [usuarios, setUsuarios] = useState([])
 
-    this.state = {
-      usuarios: []
-    }
-
-    this.addUsuario = this.addUsuario.bind(this)
-
-  }
-
- 
-  addUsuario(usuario) {
-    const usuarios = [...this.state.usuarios, usuario]
-    this.setState({ usuarios: usuarios })
-  }
-
-  removerUsuario(usuario) {
-
-    if (window.confirm(`Tem certeza que deseja remover "${usuario.nome} ${usuario.sobrenome}"?`)) {
-
-        fetch(`https://reqres.in/api/users/${usuario.id}`,{
-            method: 'DELETE'
-        })
-        .then(resposta=>{
-            console.log(resposta)
-
-            if(resposta.ok){
-                let usuarios = this.state.usuarios
-                usuarios = usuarios.filter(x => x.id !== usuario.id)
-                this.setState({ usuarios: usuarios })
-            }
-        })
-
-    }
-
-  }
-
-//   melhor lugar p executar requisicao http
-  componentDidMount() {
-      fetch('https://reqres.in/api/users')
-      .then(resposta =>resposta.json())
-      .then(dados => {
-        //   console.log(dados.data)
+    useEffect(()=>{
+        fetch('https://reqres.in/api/users')
+        .then(resposta =>resposta.json())
+        .then(dados => {
 
           const usuarios = dados.data.map(usuario=>({
                 id: usuario.id,
@@ -59,24 +21,40 @@ class Usuarios extends Component {
               
           }))
 
-        //   console.log(usuarios)
-        // this.setState({usuarios: usuarios})
-        // como tem o mesmo nome, podemos simplificar para:
-        this.setState({usuarios})
-      })
-  }
+          setUsuarios(usuarios)
+        })
+    }, []);
+ 
+    const addUsuario = usuario => {
+        setUsuarios(usuariosAtuais => [...usuariosAtuais, usuario])
+    }
 
-  render() {
+    const removerUsuario = usuario => {
+
+        if (window.confirm(`Tem certeza que deseja remover "${usuario.nome} ${usuario.sobrenome}"?`)) {
+            fetch(`https://reqres.in/api/users/${usuario.id}`,{
+                method: 'DELETE'
+            })
+            .then(resposta=>{
+                // console.log(resposta)
+                if(resposta.ok){
+                    setUsuarios(usuarios.filter(x=>x.id !== usuario.id))
+                }
+            })
+
+        }
+
+    }
 
     return (
       <>
 
-        <AddUsuario addUsuario={this.addUsuario} />
+        <AddUsuario addUsuario={addUsuario} />
 
-        {this.state.usuarios.map(usuario => (
+        {usuarios.map(usuario => (
             <Usuario key={usuario.id}
                     usuario={usuario}
-                    removerUsuario={this.removerUsuario.bind(this, usuario)}
+                    removerUsuario={()=> removerUsuario(usuario)}
             />
         ))}
 
@@ -84,10 +62,7 @@ class Usuarios extends Component {
 
     )
 
-  }
-
 }
 
- 
 
 export default Usuarios

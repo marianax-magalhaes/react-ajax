@@ -8,7 +8,7 @@ function AddUsuario(props) {
     const [sobrenome, setSobrenome] = useState('')
     const [email, setEmail] = useState('')
 
-    const onSubmitHandler = event => {
+    const onSubmitHandler=event=>{
         event.preventDefault()
 
         const usuario = {nome, sobrenome, email}
@@ -27,7 +27,7 @@ function AddUsuario(props) {
 
             props.addUsuario(dados)
     })
-  }
+    }
 
     return (
 
@@ -35,7 +35,7 @@ function AddUsuario(props) {
 
         <h2>Adicionar Usuário</h2>
 
-        <form onSubmit={this.onSubmitHandler}>
+        <form onSubmit={onSubmitHandler}>
 
           <div className="Linha">
 
@@ -45,7 +45,7 @@ function AddUsuario(props) {
                 type="text"
                 name="nome"
                 value={nome}
-                onChange={event=> setNome.target.value}
+                onChange={event=> setNome(event.target.value)}
                 required>
               </input>
             </div>
